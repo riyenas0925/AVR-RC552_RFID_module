@@ -1684,58 +1684,68 @@ _main:
 ;     406     }	
 ;     407     */
 ;     408     
-;     409     while (1)
-_0xD:
-;     410     {
-;     411         byte = MFRC_READ(0x37);
+;     409     delay_ms(100);
+	LDI  R30,LOW(100)
+	LDI  R31,HIGH(100)
+	RCALL SUBOPT_0x9
+	RCALL _delay_ms
+;     410     byte = MFRC_READ(0x37);
 	LDI  R30,LOW(55)
 	ST   -Y,R30
 	RCALL _MFRC_READ
 	MOV  R16,R30
+;     411     delay_ms(200);
+	LDI  R30,LOW(200)
+	LDI  R31,HIGH(200)
+	RCALL SUBOPT_0x9
+	RCALL _delay_ms
 ;     412     
-;     413         if(byte == 0x92)
+;     413     while (1)
+_0xD:
+;     414     {
+;     415         if(byte == 0x92)
 	CPI  R16,146
 	BRNE _0x10
-;     414         {               
-;     415             LCD_STR(0,0,str1);
+;     416         {               
+;     417             LCD_STR(0,0,str1);
 	LDI  R30,LOW(0)
 	RCALL SUBOPT_0x4
 	RCALL SUBOPT_0xA
-;     416             LCD_STR(1,0,str5);
+;     418             LCD_STR(1,0,str5);
 	LDI  R30,LOW(0)
 	ST   -Y,R30
 	MOVW R30,R28
 	SUBI R30,LOW(-(90))
 	SBCI R31,HIGH(-(90))
 	RJMP _0x17
-;     417         }
-;     418         
-;     419         else if(byte == 0x91)
+;     419         }
+;     420         
+;     421         else if(byte == 0x91)
 _0x10:
 	CPI  R16,145
 	BRNE _0x12
-;     420         {
-;     421             LCD_STR(0,0,str1);
+;     422         {
+;     423             LCD_STR(0,0,str1);
 	LDI  R30,LOW(0)
 	RCALL SUBOPT_0x4
 	RCALL SUBOPT_0xA
-;     422             LCD_STR(1,0,str6);
+;     424             LCD_STR(1,0,str6);
 	LDI  R30,LOW(0)
 	ST   -Y,R30
 	MOVW R30,R28
 	SUBI R30,LOW(-(78))
 	SBCI R31,HIGH(-(78))
 	RJMP _0x17
-;     423         }
-;     424        
-;     425         else
+;     425         }
+;     426        
+;     427         else
 _0x12:
-;     426         {
-;     427             LCD_STR(0,0,str1);
+;     428         {
+;     429             LCD_STR(0,0,str1);
 	LDI  R30,LOW(0)
 	RCALL SUBOPT_0x4
 	RCALL SUBOPT_0xA
-;     428             LCD_STR(1,0,str7);
+;     430             LCD_STR(1,0,str7);
 	LDI  R30,LOW(0)
 	ST   -Y,R30
 	MOVW R30,R28
@@ -1745,10 +1755,10 @@ _0x17:
 	ST   -Y,R31
 	ST   -Y,R30
 	RCALL _LCD_STR
-;     429         }                     
-;     430     };
+;     431         }                     
+;     432     };
 	RJMP _0xD
-;     431 }
+;     433 }
 _0x14:
 	RJMP _0x14
 
@@ -1812,7 +1822,7 @@ SUBOPT_0x8:
 	LDI  R30,LOW(56)
 	RJMP SUBOPT_0x6
 
-;OPTIMIZER ADDED SUBROUTINE, CALLED 5 TIMES, CODE SIZE REDUCTION:2 WORDS
+;OPTIMIZER ADDED SUBROUTINE, CALLED 7 TIMES, CODE SIZE REDUCTION:4 WORDS
 SUBOPT_0x9:
 	ST   -Y,R31
 	ST   -Y,R30

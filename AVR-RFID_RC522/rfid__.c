@@ -32,6 +32,11 @@ Data Stack size     : 256
 
 #define SPIF 7
 
+#define CARD_FOUND		1
+#define CARD_NOT_FOUND	2
+#define ERROR			3
+#define MAX_LEN 13
+
 /*****************************************************
 LCD - Atmega8
 E - PC0
@@ -43,6 +48,11 @@ D0 ~ D7 - PD0 ~ PD7
 
 4bit mode
 D4 ~ D7 - PD4 ~ PD7
+*****************************************************/
+
+
+/*****************************************************
+SPI FUNCTION
 *****************************************************/
 
 void SPI_INIT(){
@@ -88,6 +98,10 @@ unsigned char MFRC_READ(unsigned char REG){
 }
 */
 
+/*****************************************************
+MFRC-522 function
+*****************************************************/
+
 void MFRC_WRITE(unsigned char REG, unsigned char DATA){
     SS = 0;
     SPI_TRANSMIT((REG<<1)&0x7E);
@@ -127,8 +141,150 @@ void MFRC_INIT(){
     {
     	MFRC_WRITE(0x14,(byte|0x03));     //TxControlReg
     }
+}    
 
+/*
+unsigned char MFRC_TO_CARD(unsigned char cmd, unsigned char *send data, unsigned char send_data_len, unsigned char *back_data, unsigned long *back_data_len){
+    unsigned char status = ERROR;
+    unsigned char irqEn = 0x00;
+    unsigned char waitIRq = 0x00;
+    unsigned char lastBits;
+    unsigned char n;
+    unsigned char tmp;
+    unsigned long i;
+
+    switch (cmd)
+    {
+        case 0x0E:		//MFAuthent Certification cards close
+        {
+            irqEn = 0x12;
+            waitIRq = 0x10;
+            break;
+        }
+        
+        case 0x0C:	//Transmit FIFO data
+        {
+            irqEn = 0x77;
+            waitIRq = 0x30;
+            break;
+        }
+        
+        default:
+        break;
+    }
+   
+    //mfrc522_write(ComIEnReg, irqEn|0x80);	//Interrupt request
+    n=MFRC_READ(0x04);
+    MFRC_WRITE(0x04,n&(~0x80));//clear all interrupt bits
+    n=MFRC_READ(0x0A);//FIFOLevelReg
+    MFRC_WRITE(0x0A,n|0x80);//flush FIFO data
+    
+	MFRC_WRITE(0x01, 0x00);	//NO action; Cancel the current cmd???
+
+	//Writing data to the FIFO
+    for (i=0; i<send_data_len; i++)
+    {   
+		MFRC_WRITE(0x09, send_data[i]);    
+	}
+
+	//Execute the cmd
+	MFRC_WRITE(0x01, cmd);
+    if (cmd == Transceive_CMD)
+    {    
+		n=MFRC_READ(0x0D);
+		MFRC_WRITE(0x0D);  
+	}   
+    
+	//Waiting to receive data to complete
+	i = 2000;	//i according to the clock frequency adjustment, the operator M1 card maximum waiting time 25ms???
+    do 
+    {
+		//CommIrqReg[7..0]
+		//Set1 TxIRq RxIRq IdleIRq HiAlerIRq LoAlertIRq ErrIRq TimerIRq
+        n = MFRC_READ(0x04);
+        i--;
+    }
+    while ((i!=0) && !(n&0x01) && !(n&waitIRq));
+
+	tmp=MFRC_READ(0x0D);
+	MFRC_WRITE(0x0D,tmp&(~0x80));
+	
+    if (i != 0)
+    {    
+        if(!(MFRC_READ(0x06) & 0x1B))	//BufferOvfl Collerr CRCErr ProtecolErr
+        {
+            status = CARD_FOUND;
+            if (n & irqEn & 0x01)
+            {   
+				status = CARD_NOT_FOUND;			//??   
+			}
+
+            if (cmd == Transceive_CMD)
+            {
+               	n = MFRC_READ(0x0A);      //FIFOLevelReg
+              	lastBits = MFRC_READ(0x0C) & 0x07;     //ControlReg
+                if (lastBits)
+                {   
+					*back_data_len = (n-1)*8 + lastBits;   
+				}
+                else
+                {   
+					*back_data_len = n*8;   
+				}
+
+                if (n == 0)
+                {   
+					n = 1;    
+				}
+                if (n > MAX_LEN)
+                {   
+					n = MAX_LEN;   
+				}
+				
+				//Reading the received data in FIFO
+                for (i=0; i<n; i++)
+                {   
+					back_data[i] = MFRC_READ(0x09);       //FIFODataReg
+				}
+            }
+        }
+        else
+        {   
+			status = ERROR;  
+		}
+        
+    }
+	
+    //SetBitMask(ControlReg,0x80);           //timer stops
+    //mfrc522_write(cmdReg, PCD_IDLE); 
+
+    return status;   
+}              
+
+
+unsigned char MFRC_REQUEST(unsigned char req_mode, unsigned char * tag_type)
+{
+	unsigned char  status;  
+	unsigned long backBits;//The received data bits
+
+	MFRC_WRITE(0x0D, 0x07);//TxLastBists = BitFramingReg[2..0]	???
+	
+	tag_type[0] = req_mode;
+	status = MFRC_TO_CARD(0x0C, tag_type, 1, tag_type, &backBits);
+
+	if ((status != CARD_FOUND) || (backBits != 0x10))
+	{    
+		status = ERROR;
+	}
+   
+	return status;
 }
+*/
+
+
+/*****************************************************
+CLCD FUNCTION
+*****************************************************/
 
 void COM_WRITE(unsigned char REG){
     RS = 0;
@@ -209,7 +365,7 @@ void LCD_INIT(int mode){
 void main(void)
 {
     unsigned char str1[] = "RFID-TEST...";
-    unsigned char str2[] = "*RFID-RC522*";
+    unsigned char str2[] = "RFID-RC522";
     unsigned char str3[] = "Reset Clear";
     unsigned char str4[] = "FIFO Read...";
     unsigned char str5[] = "Version 1.0";
@@ -250,10 +406,12 @@ void main(void)
     }	
     */
     
+    delay_ms(100);
+    byte = MFRC_READ(0x37);
+    delay_ms(200);
+    
     while (1)
     {
-        byte = MFRC_READ(0x37);
-    
         if(byte == 0x92)
         {               
             LCD_STR(0,0,str1);

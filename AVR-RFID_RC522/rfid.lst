@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.2  rfid.asm Tue Jan 30 16:29:47 2018
+AVRASM ver. 2.1.2  rfid.asm Thu Feb 08 14:10:34 2018
 
 rfid.asm(990): Including file 'rfid.vec'
 rfid.asm(991): Including file 'rfid.inc'
@@ -996,7 +996,7 @@ rfid.asm(991): Including file 'rfid.inc'
                  	.INCLUDE "rfid.vec"
                  
                  ;INTERRUPT VECTORS
-000000 c05f      	RJMP __RESET
+000000 c05e      	RJMP __RESET
 000001 cffe      	RJMP 0x00
 000002 cffd      	RJMP 0x00
 000003 cffc      	RJMP 0x00
@@ -1081,96 +1081,95 @@ rfid.asm(991): Including file 'rfid.inc'
 00004e 4320      	.DB  0x20,0x43
 00004f 656c      	.DB  0x6C,0x65
 000050 7261      	.DB  0x61,0x72
-000051 2a00      	.DB  0x0,0x2A
-000052 4652      	.DB  0x52,0x46
-000053 4449      	.DB  0x49,0x44
-000054 522d      	.DB  0x2D,0x52
-000055 3543      	.DB  0x43,0x35
-000056 3232      	.DB  0x32,0x32
-000057 002a      	.DB  0x2A,0x0
-000058 4652      	.DB  0x52,0x46
-000059 4449      	.DB  0x49,0x44
-00005a 542d      	.DB  0x2D,0x54
-00005b 5345      	.DB  0x45,0x53
-00005c 2e54      	.DB  0x54,0x2E
-00005d 2e2e      	.DB  0x2E,0x2E
-rfid.inc(78): warning: .cseg .db misalignment - padding zero byte
+000051 5200      	.DB  0x0,0x52
+000052 4946      	.DB  0x46,0x49
+000053 2d44      	.DB  0x44,0x2D
+000054 4352      	.DB  0x52,0x43
+000055 3235      	.DB  0x35,0x32
+000056 0032      	.DB  0x32,0x0
+000057 4652      	.DB  0x52,0x46
+000058 4449      	.DB  0x49,0x44
+000059 542d      	.DB  0x2D,0x54
+00005a 5345      	.DB  0x45,0x53
+00005b 2e54      	.DB  0x54,0x2E
+00005c 2e2e      	.DB  0x2E,0x2E
+rfid.inc(77): warning: .cseg .db misalignment - padding zero byte
 rfid.asm(991): 'rfid.inc' included form here
-00005e 0000      	.DB  0x0
+00005d 0000      	.DB  0x0
                  
                  __GLOBAL_INI_TBL:
-00005f 0000      	.DW  0
+00005e 0000      	.DW  0
                  _0x18:
                  
                  __RESET:
-000060 94f8      	CLI
-000061 27ee      	CLR  R30
-000062 bbec      	OUT  EECR,R30
+00005f 94f8      	CLI
+000060 27ee      	CLR  R30
+000061 bbec      	OUT  EECR,R30
                  
                  ;INTERRUPT VECTORS ARE PLACED
                  ;AT THE START OF FLASH
-000063 e0f1      	LDI  R31,1
-000064 bffb      	OUT  GICR,R31
-000065 bfeb      	OUT  GICR,R30
-000066 bfe5      	OUT  MCUCR,R30
+000062 e0f1      	LDI  R31,1
+000063 bffb      	OUT  GICR,R31
+000064 bfeb      	OUT  GICR,R30
+000065 bfe5      	OUT  MCUCR,R30
                  
                  ;DISABLE WATCHDOG
-000067 e1f8      	LDI  R31,0x18
-000068 bdf1      	OUT  WDTCR,R31
-000069 bde1      	OUT  WDTCR,R30
+000066 e1f8      	LDI  R31,0x18
+000067 bdf1      	OUT  WDTCR,R31
+000068 bde1      	OUT  WDTCR,R30
                  
                  ;CLEAR R2-R14
-00006a e08d      	LDI  R24,13
-00006b e0a2      	LDI  R26,2
-00006c 27bb      	CLR  R27
+000069 e08d      	LDI  R24,13
+00006a e0a2      	LDI  R26,2
+00006b 27bb      	CLR  R27
                  __CLEAR_REG:
-00006d 93ed      	ST   X+,R30
-00006e 958a      	DEC  R24
-00006f f7e9      	BRNE __CLEAR_REG
+00006c 93ed      	ST   X+,R30
+00006d 958a      	DEC  R24
+00006e f7e9      	BRNE __CLEAR_REG
                  
                  ;CLEAR SRAM
-000070 e080      	LDI  R24,LOW(0x400)
-000071 e094      	LDI  R25,HIGH(0x400)
-000072 e6a0      	LDI  R26,0x60
+00006f e080      	LDI  R24,LOW(0x400)
+000070 e094      	LDI  R25,HIGH(0x400)
+000071 e6a0      	LDI  R26,0x60
                  __CLEAR_SRAM:
-000073 93ed      	ST   X+,R30
-000074 9701      	SBIW R24,1
-000075 f7e9      	BRNE __CLEAR_SRAM
+000072 93ed      	ST   X+,R30
+000073 9701      	SBIW R24,1
+000074 f7e9      	BRNE __CLEAR_SRAM
                  
                  ;GLOBAL VARIABLES INITIALIZATION
-000076 ebee      	LDI  R30,LOW(__GLOBAL_INI_TBL*2)
-000077 e0f0      	LDI  R31,HIGH(__GLOBAL_INI_TBL*2)
+000075 ebec      	LDI  R30,LOW(__GLOBAL_INI_TBL*2)
+000076 e0f0      	LDI  R31,HIGH(__GLOBAL_INI_TBL*2)
                  __GLOBAL_INI_NEXT:
-000078 9185      	LPM  R24,Z+
-000079 9195      	LPM  R25,Z+
-00007a 9700      	SBIW R24,0
-00007b f061      	BREQ __GLOBAL_INI_END
-00007c 91a5      	LPM  R26,Z+
-00007d 91b5      	LPM  R27,Z+
-00007e 9005      	LPM  R0,Z+
-00007f 9015      	LPM  R1,Z+
-000080 01bf      	MOVW R22,R30
-000081 01f0      	MOVW R30,R0
+000077 9185      	LPM  R24,Z+
+000078 9195      	LPM  R25,Z+
+000079 9700      	SBIW R24,0
+00007a f061      	BREQ __GLOBAL_INI_END
+00007b 91a5      	LPM  R26,Z+
+00007c 91b5      	LPM  R27,Z+
+00007d 9005      	LPM  R0,Z+
+00007e 9015      	LPM  R1,Z+
+00007f 01bf      	MOVW R22,R30
+000080 01f0      	MOVW R30,R0
                  __GLOBAL_INI_LOOP:
-000082 9005      	LPM  R0,Z+
-000083 920d      	ST   X+,R0
-000084 9701      	SBIW R24,1
-000085 f7e1      	BRNE __GLOBAL_INI_LOOP
-000086 01fb      	MOVW R30,R22
-000087 cff0      	RJMP __GLOBAL_INI_NEXT
+000081 9005      	LPM  R0,Z+
+000082 920d      	ST   X+,R0
+000083 9701      	SBIW R24,1
+000084 f7e1      	BRNE __GLOBAL_INI_LOOP
+000085 01fb      	MOVW R30,R22
+000086 cff0      	RJMP __GLOBAL_INI_NEXT
                  __GLOBAL_INI_END:
                  
                  ;STACK POINTER INITIALIZATION
-000088 e5ef      	LDI  R30,LOW(0x45F)
-000089 bfed      	OUT  SPL,R30
-00008a e0e4      	LDI  R30,HIGH(0x45F)
-00008b bfee      	OUT  SPH,R30
+000087 e5ef      	LDI  R30,LOW(0x45F)
+000088 bfed      	OUT  SPL,R30
+000089 e0e4      	LDI  R30,HIGH(0x45F)
+00008a bfee      	OUT  SPH,R30
                  
                  ;DATA STACK POINTER INITIALIZATION
-00008c e6c0      	LDI  R28,LOW(0x160)
-00008d e0d1      	LDI  R29,HIGH(0x160)
+00008b e6c0      	LDI  R28,LOW(0x160)
+00008c e0d1      	LDI  R29,HIGH(0x160)
                  
-00008e c08c      	RJMP _main
+00008d c08c      	RJMP _main
                  
                  	.ESEG
                  	.ORG 0
@@ -1211,381 +1210,537 @@ rfid.asm(991): 'rfid.inc' included form here
                  ;      32 
                  ;      33 #define SPIF 7
                  ;      34 
-                 ;      35 /*****************************************************
-                 ;      36 LCD - Atmega8
-                 ;      37 E - PC0
-                 ;      38 RW - PC1
-                 ;      39 RS - PC2
-                 ;      40 
-                 ;      41 8bit mode
-                 ;      42 D0 ~ D7 - PD0 ~ PD7
-                 ;      43 
-                 ;      44 4bit mode
-                 ;      45 D4 ~ D7 - PD4 ~ PD7
-                 ;      46 *****************************************************/
-                 ;      47 
-                 ;      48 void SPI_INIT(){
+                 ;      35 #define CARD_FOUND		1
+                 ;      36 #define CARD_NOT_FOUND	2
+                 ;      37 #define ERROR			3
+                 ;      38 #define MAX_LEN 13
+                 ;      39 
+                 ;      40 /*****************************************************
+                 ;      41 LCD - Atmega8
+                 ;      42 E - PC0
+                 ;      43 RW - PC1
+                 ;      44 RS - PC2
+                 ;      45 
+                 ;      46 8bit mode
+                 ;      47 D0 ~ D7 - PD0 ~ PD7
+                 ;      48 
+                 ;      49 4bit mode
+                 ;      50 D4 ~ D7 - PD4 ~ PD7
+                 ;      51 *****************************************************/
+                 ;      52 
+                 ;      53 
+                 ;      54 /*****************************************************
+                 ;      55 SPI FUNCTION
+                 ;      56 *****************************************************/
+                 ;      57 
+                 ;      58 void SPI_INIT(){
                  
                  	.CSEG
                  _SPI_INIT:
-                 ;      49     SPCR=0x51;  //Prescaler 16
-00008f e5e1      	LDI  R30,LOW(81)
-000090 b9ed      	OUT  0xD,R30
-                 ;      50 }
-000091 9508      	RET
-                 ;      51 
-                 ;      52 /*
-                 ;      53 void SPI_WRITE(unsigned char DATA){
-                 ;      54     SPDR=DATA;
-                 ;      55     while(!(SPSR & (1<<SPIF)));
-                 ;      56 }
-                 ;      57 
-                 ;      58 void SPI_READ(){
-                 ;      59     SPDR=0x00;
-                 ;      60     while(!(SPSR & (1<<SPIF)));
-                 ;      61     return SPDR;
-                 ;      62 }
-                 ;      63 */
-                 ;      64 
-                 ;      65 unsigned char SPI_TRANSMIT(unsigned char DATA){
+                 ;      59     SPCR=0x51;  //Prescaler 16
+00008e e5e1      	LDI  R30,LOW(81)
+00008f b9ed      	OUT  0xD,R30
+                 ;      60 }
+000090 9508      	RET
+                 ;      61 
+                 ;      62 /*
+                 ;      63 void SPI_WRITE(unsigned char DATA){
+                 ;      64     SPDR=DATA;
+                 ;      65     while(!(SPSR & (1<<SPIF)));
+                 ;      66 }
+                 ;      67 
+                 ;      68 void SPI_READ(){
+                 ;      69     SPDR=0x00;
+                 ;      70     while(!(SPSR & (1<<SPIF)));
+                 ;      71     return SPDR;
+                 ;      72 }
+                 ;      73 */
+                 ;      74 
+                 ;      75 unsigned char SPI_TRANSMIT(unsigned char DATA){
                  _SPI_TRANSMIT:
-                 ;      66     SPDR=DATA;
+                 ;      76     SPDR=DATA;
                  ;	DATA -> Y+0
-000092 81e8      	LD   R30,Y
-000093 b9ef      	OUT  0xF,R30
-                 ;      67     while(!(SPSR & (1<<SPIF)));
+000091 81e8      	LD   R30,Y
+000092 b9ef      	OUT  0xF,R30
+                 ;      77     while(!(SPSR & (1<<SPIF)));
                  _0x3:
-000094 9b77      	SBIS 0xE,7
-000095 cffe      	RJMP _0x3
-                 ;      68     return SPDR;
-000096 b1ef      	IN   R30,0xF
-000097 c041      	RJMP _0x16
-                 ;      69 }
-                 ;      70 
-                 ;      71 /*
-                 ;      72 void MFRC_WRITE(unsigned char REG, unsigned char DATA){
-                 ;      73     SS = 0;
-                 ;      74     SPI_WRITE((REG<<1)&0x7E);
-                 ;      75     SPI_WRITE(DATA);
-                 ;      76     SS = 1;
-                 ;      77 }
-                 ;      78 
-                 ;      79 unsigned char MFRC_READ(unsigned char REG){
-                 ;      80     unsigned char DATA;	
-                 ;      81     
-                 ;      82     SS = 0;
-                 ;      83     SPI_WRITE(((REG<<1)&0x7E)|0x80);
-                 ;      84     DATA = SPI_READ();
-                 ;      85     SS = 1;
-                 ;      86     
-                 ;      87     return DATA;
-                 ;      88 }
-                 ;      89 */
-                 ;      90 
-                 ;      91 void MFRC_WRITE(unsigned char REG, unsigned char DATA){
-                 _MFRC_WRITE:
+000093 9b77      	SBIS 0xE,7
+000094 cffe      	RJMP _0x3
+                 ;      78     return SPDR;
+000095 b1ef      	IN   R30,0xF
+000096 c041      	RJMP _0x16
+                 ;      79 }
+                 ;      80 
+                 ;      81 /*
+                 ;      82 void MFRC_WRITE(unsigned char REG, unsigned char DATA){
+                 ;      83     SS = 0;
+                 ;      84     SPI_WRITE((REG<<1)&0x7E);
+                 ;      85     SPI_WRITE(DATA);
+                 ;      86     SS = 1;
+                 ;      87 }
+                 ;      88 
+                 ;      89 unsigned char MFRC_READ(unsigned char REG){
+                 ;      90     unsigned char DATA;	
+                 ;      91     
                  ;      92     SS = 0;
+                 ;      93     SPI_WRITE(((REG<<1)&0x7E)|0x80);
+                 ;      94     DATA = SPI_READ();
+                 ;      95     SS = 1;
+                 ;      96     
+                 ;      97     return DATA;
+                 ;      98 }
+                 ;      99 */
+                 ;     100 
+                 ;     101 /*****************************************************
+                 ;     102 MFRC-522 function
+                 ;     103 *****************************************************/
+                 ;     104 
+                 ;     105 void MFRC_WRITE(unsigned char REG, unsigned char DATA){
+                 _MFRC_WRITE:
+                 ;     106     SS = 0;
                  ;	REG -> Y+1
                  ;	DATA -> Y+0
-000098 d0c2      	RCALL SUBOPT_0x0
-                 ;      93     SPI_TRANSMIT((REG<<1)&0x7E);
-000099 d0c6      	RCALL SUBOPT_0x1
-                 ;      94     SPI_TRANSMIT(DATA);
-00009a 81e8      	LD   R30,Y
-00009b d0c4      	RCALL SUBOPT_0x1
-                 ;      95     SS = 1;
-00009c 9ac2      	SBI  0x18,2
-                 ;      96 }
-00009d c07b      	RJMP _0x15
-                 ;      97 
-                 ;      98 unsigned char MFRC_READ(unsigned char REG){
+000097 d0ca      	RCALL SUBOPT_0x0
+                 ;     107     SPI_TRANSMIT((REG<<1)&0x7E);
+000098 d0ce      	RCALL SUBOPT_0x1
+                 ;     108     SPI_TRANSMIT(DATA);
+000099 81e8      	LD   R30,Y
+00009a d0cc      	RCALL SUBOPT_0x1
+                 ;     109     SS = 1;
+00009b 9ac2      	SBI  0x18,2
+                 ;     110 }
+00009c c07b      	RJMP _0x15
+                 ;     111 
+                 ;     112 unsigned char MFRC_READ(unsigned char REG){
                  _MFRC_READ:
-                 ;      99     unsigned char DATA;	
-                 ;     100     
-                 ;     101     SS = 0;
-00009e 930a      	ST   -Y,R16
+                 ;     113     unsigned char DATA;	
+                 ;     114     
+                 ;     115     SS = 0;
+00009d 930a      	ST   -Y,R16
                  ;	REG -> Y+1
                  ;	DATA -> R16
-00009f d0bb      	RCALL SUBOPT_0x0
-                 ;     102     SPI_TRANSMIT(((REG<<1)&0x7E)|0x80);
-0000a0 68e0      	ORI  R30,0x80
-0000a1 d0be      	RCALL SUBOPT_0x1
-                 ;     103     DATA = SPI_TRANSMIT(0x00);
-0000a2 e0e0      	LDI  R30,LOW(0)
-0000a3 d0bc      	RCALL SUBOPT_0x1
-0000a4 2f0e      	MOV  R16,R30
-                 ;     104     SS = 1;
-0000a5 9ac2      	SBI  0x18,2
-                 ;     105     
-                 ;     106     return DATA;
-0000a6 2fe0      	MOV  R30,R16
-0000a7 8108      	LDD  R16,Y+0
-0000a8 c070      	RJMP _0x15
-                 ;     107 }
-                 ;     108 
-                 ;     109 void MFRC_RESET(){
+00009e d0c3      	RCALL SUBOPT_0x0
+                 ;     116     SPI_TRANSMIT(((REG<<1)&0x7E)|0x80);
+00009f 68e0      	ORI  R30,0x80
+0000a0 d0c6      	RCALL SUBOPT_0x1
+                 ;     117     DATA = SPI_TRANSMIT(0x00);
+0000a1 e0e0      	LDI  R30,LOW(0)
+0000a2 d0c4      	RCALL SUBOPT_0x1
+0000a3 2f0e      	MOV  R16,R30
+                 ;     118     SS = 1;
+0000a4 9ac2      	SBI  0x18,2
+                 ;     119     
+                 ;     120     return DATA;
+0000a5 2fe0      	MOV  R30,R16
+0000a6 8108      	LDD  R16,Y+0
+0000a7 c070      	RJMP _0x15
+                 ;     121 }
+                 ;     122 
+                 ;     123 void MFRC_RESET(){
                  _MFRC_RESET:
-                 ;     110     MFRC_WRITE(0x01,0x0F);     //CommandReg, SoftReset_CMD
-0000a9 d0b8      	RCALL SUBOPT_0x2
-0000aa e0ef      	LDI  R30,LOW(15)
-0000ab d0b9      	RCALL SUBOPT_0x3
-                 ;     111 }
-0000ac 9508      	RET
-                 ;     112 
-                 ;     113 void MFRC_INIT(){
+                 ;     124     MFRC_WRITE(0x01,0x0F);     //CommandReg, SoftReset_CMD
+0000a8 d0c0      	RCALL SUBOPT_0x2
+0000a9 e0ef      	LDI  R30,LOW(15)
+0000aa d0c1      	RCALL SUBOPT_0x3
+                 ;     125 }
+0000ab 9508      	RET
+                 ;     126 
+                 ;     127 void MFRC_INIT(){
                  _MFRC_INIT:
-                 ;     114     unsigned char byte;
-                 ;     115     
-                 ;     116     MFRC_RESET();
-0000ad 930a      	ST   -Y,R16
+                 ;     128     unsigned char byte;
+                 ;     129     
+                 ;     130     MFRC_RESET();
+0000ac 930a      	ST   -Y,R16
                  ;	byte -> R16
-0000ae dffa      	RCALL _MFRC_RESET
-                 ;     117 	
-                 ;     118     MFRC_WRITE(0x2A, 0x8D);         //TmodeReg
-0000af e2ea      	LDI  R30,LOW(42)
-0000b0 93ea      	ST   -Y,R30
-0000b1 e8ed      	LDI  R30,LOW(141)
-0000b2 d0b2      	RCALL SUBOPT_0x3
-                 ;     119     MFRC_WRITE(0x2B, 0x3E);    //TPrescaleReg
-0000b3 e2eb      	LDI  R30,LOW(43)
-0000b4 93ea      	ST   -Y,R30
-0000b5 e3ee      	LDI  R30,LOW(62)
-0000b6 d0ae      	RCALL SUBOPT_0x3
-                 ;     120     MFRC_WRITE(0x2C, 30);       //TReloadReg_1
-0000b7 e2ec      	LDI  R30,LOW(44)
-0000b8 93ea      	ST   -Y,R30
-0000b9 e1ee      	LDI  R30,LOW(30)
-0000ba d0aa      	RCALL SUBOPT_0x3
-                 ;     121     MFRC_WRITE(0x2D, 0);	//TReloadReg_2
-0000bb e2ed      	LDI  R30,LOW(45)
-0000bc d0aa      	RCALL SUBOPT_0x4
-0000bd d0a7      	RCALL SUBOPT_0x3
-                 ;     122     MFRC_WRITE(0x15, 0x40);	        //TxASKReg
-0000be e1e5      	LDI  R30,LOW(21)
-0000bf 93ea      	ST   -Y,R30
-0000c0 e4e0      	LDI  R30,LOW(64)
-0000c1 d0a3      	RCALL SUBOPT_0x3
-                 ;     123     MFRC_WRITE(0x11, 0x3D);          //ModeReg
-0000c2 e1e1      	LDI  R30,LOW(17)
-0000c3 93ea      	ST   -Y,R30
-0000c4 e3ed      	LDI  R30,LOW(61)
-0000c5 d09f      	RCALL SUBOPT_0x3
-                 ;     124 	
-                 ;     125     byte = MFRC_READ(0x14);     //TxControlReg
-0000c6 e1e4      	LDI  R30,LOW(20)
-0000c7 93ea      	ST   -Y,R30
-0000c8 dfd5      	RCALL _MFRC_READ
-0000c9 2f0e      	MOV  R16,R30
-                 ;     126     if(!(byte&0x03))
-0000ca 2fe0      	MOV  R30,R16
-0000cb 70e3      	ANDI R30,LOW(0x3)
-0000cc f429      	BRNE _0x6
-                 ;     127     {
-                 ;     128     	MFRC_WRITE(0x14,(byte|0x03));     //TxControlReg
-0000cd e1e4      	LDI  R30,LOW(20)
-0000ce 93ea      	ST   -Y,R30
-0000cf 2fe0      	MOV  R30,R16
-0000d0 60e3      	ORI  R30,LOW(0x3)
-0000d1 d093      	RCALL SUBOPT_0x3
-                 ;     129     }
-                 ;     130 
-                 ;     131 }
+0000ad dffa      	RCALL _MFRC_RESET
+                 ;     131 	
+                 ;     132     MFRC_WRITE(0x2A, 0x8D);         //TmodeReg
+0000ae e2ea      	LDI  R30,LOW(42)
+0000af 93ea      	ST   -Y,R30
+0000b0 e8ed      	LDI  R30,LOW(141)
+0000b1 d0ba      	RCALL SUBOPT_0x3
+                 ;     133     MFRC_WRITE(0x2B, 0x3E);    //TPrescaleReg
+0000b2 e2eb      	LDI  R30,LOW(43)
+0000b3 93ea      	ST   -Y,R30
+0000b4 e3ee      	LDI  R30,LOW(62)
+0000b5 d0b6      	RCALL SUBOPT_0x3
+                 ;     134     MFRC_WRITE(0x2C, 30);       //TReloadReg_1
+0000b6 e2ec      	LDI  R30,LOW(44)
+0000b7 93ea      	ST   -Y,R30
+0000b8 e1ee      	LDI  R30,LOW(30)
+0000b9 d0b2      	RCALL SUBOPT_0x3
+                 ;     135     MFRC_WRITE(0x2D, 0);	//TReloadReg_2
+0000ba e2ed      	LDI  R30,LOW(45)
+0000bb d0b2      	RCALL SUBOPT_0x4
+0000bc d0af      	RCALL SUBOPT_0x3
+                 ;     136     MFRC_WRITE(0x15, 0x40);	        //TxASKReg
+0000bd e1e5      	LDI  R30,LOW(21)
+0000be 93ea      	ST   -Y,R30
+0000bf e4e0      	LDI  R30,LOW(64)
+0000c0 d0ab      	RCALL SUBOPT_0x3
+                 ;     137     MFRC_WRITE(0x11, 0x3D);          //ModeReg
+0000c1 e1e1      	LDI  R30,LOW(17)
+0000c2 93ea      	ST   -Y,R30
+0000c3 e3ed      	LDI  R30,LOW(61)
+0000c4 d0a7      	RCALL SUBOPT_0x3
+                 ;     138 	
+                 ;     139     byte = MFRC_READ(0x14);     //TxControlReg
+0000c5 e1e4      	LDI  R30,LOW(20)
+0000c6 93ea      	ST   -Y,R30
+0000c7 dfd5      	RCALL _MFRC_READ
+0000c8 2f0e      	MOV  R16,R30
+                 ;     140     if(!(byte&0x03))
+0000c9 2fe0      	MOV  R30,R16
+0000ca 70e3      	ANDI R30,LOW(0x3)
+0000cb f429      	BRNE _0x6
+                 ;     141     {
+                 ;     142     	MFRC_WRITE(0x14,(byte|0x03));     //TxControlReg
+0000cc e1e4      	LDI  R30,LOW(20)
+0000cd 93ea      	ST   -Y,R30
+0000ce 2fe0      	MOV  R30,R16
+0000cf 60e3      	ORI  R30,LOW(0x3)
+0000d0 d09b      	RCALL SUBOPT_0x3
+                 ;     143     }
+                 ;     144 }    
                  _0x6:
-0000d2 9109      	LD   R16,Y+
-0000d3 9508      	RET
-                 ;     132 
-                 ;     133 void COM_WRITE(unsigned char REG){
+0000d1 9109      	LD   R16,Y+
+0000d2 9508      	RET
+                 ;     145 
+                 ;     146 /*
+                 ;     147 unsigned char MFRC_TO_CARD(unsigned char cmd, unsigned char *send data, unsigned char send_data_len, unsigned char *back_data, unsigned long *back_data_len){
+                 ;     148     unsigned char status = ERROR;
+                 ;     149     unsigned char irqEn = 0x00;
+                 ;     150     unsigned char waitIRq = 0x00;
+                 ;     151     unsigned char lastBits;
+                 ;     152     unsigned char n;
+                 ;     153     unsigned char tmp;
+                 ;     154     unsigned long i;
+                 ;     155 
+                 ;     156     switch (cmd)
+                 ;     157     {
+                 ;     158         case 0x0E:		//MFAuthent Certification cards close
+                 ;     159         {
+                 ;     160             irqEn = 0x12;
+                 ;     161             waitIRq = 0x10;
+                 ;     162             break;
+                 ;     163         }
+                 ;     164         
+                 ;     165         case 0x0C:	//Transmit FIFO data
+                 ;     166         {
+                 ;     167             irqEn = 0x77;
+                 ;     168             waitIRq = 0x30;
+                 ;     169             break;
+                 ;     170         }
+                 ;     171         
+                 ;     172         default:
+                 ;     173         break;
+                 ;     174     }
+                 ;     175    
+                 ;     176     //mfrc522_write(ComIEnReg, irqEn|0x80);	//Interrupt request
+                 ;     177     n=MFRC_READ(0x04);
+                 ;     178     MFRC_WRITE(0x04,n&(~0x80));//clear all interrupt bits
+                 ;     179     n=MFRC_READ(0x0A);//FIFOLevelReg
+                 ;     180     MFRC_WRITE(0x0A,n|0x80);//flush FIFO data
+                 ;     181     
+                 ;     182 	MFRC_WRITE(0x01, 0x00);	//NO action; Cancel the current cmd???
+                 ;     183 
+                 ;     184 	//Writing data to the FIFO
+                 ;     185     for (i=0; i<send_data_len; i++)
+                 ;     186     {   
+                 ;     187 		MFRC_WRITE(0x09, send_data[i]);    
+                 ;     188 	}
+                 ;     189 
+                 ;     190 	//Execute the cmd
+                 ;     191 	MFRC_WRITE(0x01, cmd);
+                 ;     192     if (cmd == Transceive_CMD)
+                 ;     193     {    
+                 ;     194 		n=MFRC_READ(0x0D);
+                 ;     195 		MFRC_WRITE(0x0D);  
+                 ;     196 	}   
+                 ;     197     
+                 ;     198 	//Waiting to receive data to complete
+                 ;     199 	i = 2000;	//i according to the clock frequency adjustment, the operator M1 card maximum waiting time 25ms???
+                 ;     200     do 
+                 ;     201     {
+                 ;     202 		//CommIrqReg[7..0]
+                 ;     203 		//Set1 TxIRq RxIRq IdleIRq HiAlerIRq LoAlertIRq ErrIRq TimerIRq
+                 ;     204         n = MFRC_READ(0x04);
+                 ;     205         i--;
+                 ;     206     }
+                 ;     207     while ((i!=0) && !(n&0x01) && !(n&waitIRq));
+                 ;     208 
+                 ;     209 	tmp=MFRC_READ(0x0D);
+                 ;     210 	MFRC_WRITE(0x0D,tmp&(~0x80));
+                 ;     211 	
+                 ;     212     if (i != 0)
+                 ;     213     {    
+                 ;     214         if(!(MFRC_READ(0x06) & 0x1B))	//BufferOvfl Collerr CRCErr ProtecolErr
+                 ;     215         {
+                 ;     216             status = CARD_FOUND;
+                 ;     217             if (n & irqEn & 0x01)
+                 ;     218             {   
+                 ;     219 				status = CARD_NOT_FOUND;			//??   
+                 ;     220 			}
+                 ;     221 
+                 ;     222             if (cmd == Transceive_CMD)
+                 ;     223             {
+                 ;     224                	n = MFRC_READ(0x0A);      //FIFOLevelReg
+                 ;     225               	lastBits = MFRC_READ(0x0C) & 0x07;     //ControlReg
+                 ;     226                 if (lastBits)
+                 ;     227                 {   
+                 ;     228 					*back_data_len = (n-1)*8 + lastBits;   
+                 ;     229 				}
+                 ;     230                 else
+                 ;     231                 {   
+                 ;     232 					*back_data_len = n*8;   
+                 ;     233 				}
+                 ;     234 
+                 ;     235                 if (n == 0)
+                 ;     236                 {   
+                 ;     237 					n = 1;    
+                 ;     238 				}
+                 ;     239                 if (n > MAX_LEN)
+                 ;     240                 {   
+                 ;     241 					n = MAX_LEN;   
+                 ;     242 				}
+                 ;     243 				
+                 ;     244 				//Reading the received data in FIFO
+                 ;     245                 for (i=0; i<n; i++)
+                 ;     246                 {   
+                 ;     247 					back_data[i] = MFRC_READ(0x09);       //FIFODataReg
+                 ;     248 				}
+                 ;     249             }
+                 ;     250         }
+                 ;     251         else
+                 ;     252         {   
+                 ;     253 			status = ERROR;  
+                 ;     254 		}
+                 ;     255         
+                 ;     256     }
+                 ;     257 	
+                 ;     258     //SetBitMask(ControlReg,0x80);           //timer stops
+                 ;     259     //mfrc522_write(cmdReg, PCD_IDLE); 
+                 ;     260 
+                 ;     261     return status;   
+                 ;     262 }              
+                 ;     263 
+                 ;     264 
+                 ;     265 unsigned char MFRC_REQUEST(unsigned char req_mode, unsigned char * tag_type)
+                 ;     266 {
+                 ;     267 	unsigned char  status;  
+                 ;     268 	unsigned long backBits;//The received data bits
+                 ;     269 
+                 ;     270 	MFRC_WRITE(0x0D, 0x07);//TxLastBists = BitFramingReg[2..0]	???
+                 ;     271 	
+                 ;     272 	tag_type[0] = req_mode;
+                 ;     273 	status = MFRC_TO_CARD(0x0C, tag_type, 1, tag_type, &backBits);
+                 ;     274 
+                 ;     275 	if ((status != CARD_FOUND) || (backBits != 0x10))
+                 ;     276 	{    
+                 ;     277 		status = ERROR;
+                 ;     278 	}
+                 ;     279    
+                 ;     280 	return status;
+                 ;     281 }
+                 ;     282 */
+                 ;     283 
+                 ;     284 
+                 ;     285 /*****************************************************
+                 ;     286 CLCD FUNCTION
+                 ;     287 *****************************************************/
+                 ;     288 
+                 ;     289 void COM_WRITE(unsigned char REG){
                  _COM_WRITE:
-                 ;     134     RS = 0;
+                 ;     290     RS = 0;
                  ;	REG -> Y+0
-0000d4 98aa      	CBI  0x15,2
-                 ;     135     RW = 0;
-0000d5 d094      	RCALL SUBOPT_0x5
-                 ;     136     E = 1; 
-                 ;     137     delay_us(50);   
-                 ;     138     PORTD = REG;
-                 ;     139     delay_us(50);
-                 ;     140     E = 0;
-                 ;     141 }              
-0000d6 c002      	RJMP _0x16
-                 ;     142 
-                 ;     143 void DATA_WRITE(unsigned char DATA){
+0000d3 98aa      	CBI  0x15,2
+                 ;     291     RW = 0;
+0000d4 d09c      	RCALL SUBOPT_0x5
+                 ;     292     E = 1; 
+                 ;     293     delay_us(50);   
+                 ;     294     PORTD = REG;
+                 ;     295     delay_us(50);
+                 ;     296     E = 0;
+                 ;     297 }              
+0000d5 c002      	RJMP _0x16
+                 ;     298 
+                 ;     299 void DATA_WRITE(unsigned char DATA){
                  _DATA_WRITE:
-                 ;     144     RS = 1;
+                 ;     300     RS = 1;
                  ;	DATA -> Y+0
-0000d7 9aaa      	SBI  0x15,2
-                 ;     145     RW = 0;
-0000d8 d091      	RCALL SUBOPT_0x5
-                 ;     146     E = 1; 
-                 ;     147     delay_us(50);   
-                 ;     148     PORTD = DATA;
-                 ;     149     delay_us(50);
-                 ;     150     E = 0;
-                 ;     151 }     
+0000d6 9aaa      	SBI  0x15,2
+                 ;     301     RW = 0;
+0000d7 d099      	RCALL SUBOPT_0x5
+                 ;     302     E = 1; 
+                 ;     303     delay_us(50);   
+                 ;     304     PORTD = DATA;
+                 ;     305     delay_us(50);
+                 ;     306     E = 0;
+                 ;     307 }     
                  _0x16:
-0000d9 9621      	ADIW R28,1
-0000da 9508      	RET
-                 ;     152 
-                 ;     153 void LCD_CHAR(unsigned char col, unsigned char row, unsigned char ch){
-                 ;     154     COM_WRITE(0x80|(row + col*0x40));
+0000d8 9621      	ADIW R28,1
+0000d9 9508      	RET
+                 ;     308 
+                 ;     309 void LCD_CHAR(unsigned char col, unsigned char row, unsigned char ch){
+                 ;     310     COM_WRITE(0x80|(row + col*0x40));
                  ;	col -> Y+2
                  ;	row -> Y+1
                  ;	ch -> Y+0
-                 ;     155     
-                 ;     156     DATA_WRITE(ch);
-                 ;     157     delay_ms(1);
-                 ;     158 }
-                 ;     159 
-                 ;     160 void LCD_STR(unsigned char col, unsigned char row, unsigned char *str){
+                 ;     311     
+                 ;     312     DATA_WRITE(ch);
+                 ;     313     delay_ms(1);
+                 ;     314 }
+                 ;     315 
+                 ;     316 void LCD_STR(unsigned char col, unsigned char row, unsigned char *str){
                  _LCD_STR:
-                 ;     161     COM_WRITE(0x80|(row + col*0x40));
+                 ;     317     COM_WRITE(0x80|(row + col*0x40));
                  ;	col -> Y+3
                  ;	row -> Y+2
                  ;	*str -> Y+0
-0000db 81eb      	LDD  R30,Y+3
-0000dc 95e2      	SWAP R30
-0000dd 7fe0      	ANDI R30,0xF0
+0000da 81eb      	LDD  R30,Y+3
+0000db 95e2      	SWAP R30
+0000dc 7fe0      	ANDI R30,0xF0
+0000dd 0fee      	LSL  R30
 0000de 0fee      	LSL  R30
-0000df 0fee      	LSL  R30
-0000e0 81aa      	LDD  R26,Y+2
-0000e1 0fea      	ADD  R30,R26
-0000e2 68e0      	ORI  R30,0x80
-0000e3 d094      	RCALL SUBOPT_0x6
-                 ;     162     
-                 ;     163     while(*str != 0){
+0000df 81aa      	LDD  R26,Y+2
+0000e0 0fea      	ADD  R30,R26
+0000e1 68e0      	ORI  R30,0x80
+0000e2 d09c      	RCALL SUBOPT_0x6
+                 ;     318     
+                 ;     319     while(*str != 0){
                  _0x7:
-0000e4 81a8      	LD   R26,Y
-0000e5 81b9      	LDD  R27,Y+1
-0000e6 91ec      	LD   R30,X
-0000e7 30e0      	CPI  R30,0
-0000e8 f041      	BREQ _0x9
-                 ;     164         DATA_WRITE(*str);
-0000e9 93ea      	ST   -Y,R30
-0000ea dfec      	RCALL _DATA_WRITE
-                 ;     165         str++;
-0000eb 81e8      	LD   R30,Y
-0000ec 81f9      	LDD  R31,Y+1
-0000ed 9631      	ADIW R30,1
-0000ee 83e8      	ST   Y,R30
-0000ef 83f9      	STD  Y+1,R31
-                 ;     166     }
-0000f0 cff3      	RJMP _0x7
+0000e3 81a8      	LD   R26,Y
+0000e4 81b9      	LDD  R27,Y+1
+0000e5 91ec      	LD   R30,X
+0000e6 30e0      	CPI  R30,0
+0000e7 f041      	BREQ _0x9
+                 ;     320         DATA_WRITE(*str);
+0000e8 93ea      	ST   -Y,R30
+0000e9 dfec      	RCALL _DATA_WRITE
+                 ;     321         str++;
+0000ea 81e8      	LD   R30,Y
+0000eb 81f9      	LDD  R31,Y+1
+0000ec 9631      	ADIW R30,1
+0000ed 83e8      	ST   Y,R30
+0000ee 83f9      	STD  Y+1,R31
+                 ;     322     }
+0000ef cff3      	RJMP _0x7
                  _0x9:
-                 ;     167 }
-0000f1 9624      	ADIW R28,4
-0000f2 9508      	RET
-                 ;     168 
-                 ;     169 void LCD_CLEAR(void){
+                 ;     323 }
+0000f0 9624      	ADIW R28,4
+0000f1 9508      	RET
+                 ;     324 
+                 ;     325 void LCD_CLEAR(void){
                  _LCD_CLEAR:
-                 ;     170     COM_WRITE(0x01);
-0000f3 d06e      	RCALL SUBOPT_0x2
-0000f4 dfdf      	RCALL _COM_WRITE
-                 ;     171     delay_ms(2);
-0000f5 d084      	RCALL SUBOPT_0x7
-                 ;     172 }
-0000f6 9508      	RET
-                 ;     173 
-                 ;     174 /*****************************************************
-                 ;     175 8bit mode = 0, 4bit mode = 1
-                 ;     176 *****************************************************/
-                 ;     177 void LCD_INIT(int mode){                              
+                 ;     326     COM_WRITE(0x01);
+0000f2 d076      	RCALL SUBOPT_0x2
+0000f3 dfdf      	RCALL _COM_WRITE
+                 ;     327     delay_ms(2);
+0000f4 d08c      	RCALL SUBOPT_0x7
+                 ;     328 }
+0000f5 9508      	RET
+                 ;     329 
+                 ;     330 /*****************************************************
+                 ;     331 8bit mode = 0, 4bit mode = 1
+                 ;     332 *****************************************************/
+                 ;     333 void LCD_INIT(int mode){                              
                  _LCD_INIT:
-                 ;     178     if(mode == 0)
+                 ;     334     if(mode == 0)
                  ;	mode -> Y+0
-0000f7 81e8      	LD   R30,Y
-0000f8 81f9      	LDD  R31,Y+1
-0000f9 9730      	SBIW R30,0
-0000fa f469      	BRNE _0xA
-                 ;     179     {
-                 ;     180         COM_WRITE(0x38);
-0000fb d083      	RCALL SUBOPT_0x8
-                 ;     181         delay_ms(2);
-0000fc d07d      	RCALL SUBOPT_0x7
-                 ;     182         COM_WRITE(0x38);
-0000fd d081      	RCALL SUBOPT_0x8
-                 ;     183         delay_ms(2);
-0000fe d07b      	RCALL SUBOPT_0x7
-                 ;     184         COM_WRITE(0x38);
-0000ff d07f      	RCALL SUBOPT_0x8
-                 ;     185         delay_ms(2);
-000100 d079      	RCALL SUBOPT_0x7
-                 ;     186         COM_WRITE(0x0E);
-000101 e0ee      	LDI  R30,LOW(14)
-000102 d075      	RCALL SUBOPT_0x6
-                 ;     187         delay_ms(2);
-000103 d076      	RCALL SUBOPT_0x7
-                 ;     188         COM_WRITE(0x06);
-000104 e0e6      	LDI  R30,LOW(6)
-000105 d072      	RCALL SUBOPT_0x6
-                 ;     189         delay_ms(2);
-000106 d073      	RCALL SUBOPT_0x7
-                 ;     190         LCD_CLEAR();
-000107 dfeb      	RCALL _LCD_CLEAR
-                 ;     191     }   
-                 ;     192     
-                 ;     193     if(mode == 1)
+0000f6 81e8      	LD   R30,Y
+0000f7 81f9      	LDD  R31,Y+1
+0000f8 9730      	SBIW R30,0
+0000f9 f469      	BRNE _0xA
+                 ;     335     {
+                 ;     336         COM_WRITE(0x38);
+0000fa d08b      	RCALL SUBOPT_0x8
+                 ;     337         delay_ms(2);
+0000fb d085      	RCALL SUBOPT_0x7
+                 ;     338         COM_WRITE(0x38);
+0000fc d089      	RCALL SUBOPT_0x8
+                 ;     339         delay_ms(2);
+0000fd d083      	RCALL SUBOPT_0x7
+                 ;     340         COM_WRITE(0x38);
+0000fe d087      	RCALL SUBOPT_0x8
+                 ;     341         delay_ms(2);
+0000ff d081      	RCALL SUBOPT_0x7
+                 ;     342         COM_WRITE(0x0E);
+000100 e0ee      	LDI  R30,LOW(14)
+000101 d07d      	RCALL SUBOPT_0x6
+                 ;     343         delay_ms(2);
+000102 d07e      	RCALL SUBOPT_0x7
+                 ;     344         COM_WRITE(0x06);
+000103 e0e6      	LDI  R30,LOW(6)
+000104 d07a      	RCALL SUBOPT_0x6
+                 ;     345         delay_ms(2);
+000105 d07b      	RCALL SUBOPT_0x7
+                 ;     346         LCD_CLEAR();
+000106 dfeb      	RCALL _LCD_CLEAR
+                 ;     347     }   
+                 ;     348     
+                 ;     349     if(mode == 1)
                  _0xA:
-000108 81a8      	LD   R26,Y
-000109 81b9      	LDD  R27,Y+1
-00010a 9711      	SBIW R26,1
-00010b f469      	BRNE _0xB
-                 ;     194     {
-                 ;     195         COM_WRITE(0x38);
-00010c d072      	RCALL SUBOPT_0x8
-                 ;     196         delay_ms(2);
-00010d d06c      	RCALL SUBOPT_0x7
-                 ;     197         COM_WRITE(0x38);
-00010e d070      	RCALL SUBOPT_0x8
-                 ;     198         delay_ms(2);
-00010f d06a      	RCALL SUBOPT_0x7
-                 ;     199         COM_WRITE(0x38);
-000110 d06e      	RCALL SUBOPT_0x8
-                 ;     200         delay_ms(2);
-000111 d068      	RCALL SUBOPT_0x7
-                 ;     201         COM_WRITE(0x0E);
-000112 e0ee      	LDI  R30,LOW(14)
-000113 d064      	RCALL SUBOPT_0x6
-                 ;     202         delay_ms(2);
-000114 d065      	RCALL SUBOPT_0x7
-                 ;     203         COM_WRITE(0x06);
-000115 e0e6      	LDI  R30,LOW(6)
-000116 d061      	RCALL SUBOPT_0x6
-                 ;     204         delay_ms(2);
-000117 d062      	RCALL SUBOPT_0x7
-                 ;     205         LCD_CLEAR();
-000118 dfda      	RCALL _LCD_CLEAR
-                 ;     206     }
-                 ;     207 }    
+000107 81a8      	LD   R26,Y
+000108 81b9      	LDD  R27,Y+1
+000109 9711      	SBIW R26,1
+00010a f469      	BRNE _0xB
+                 ;     350     {
+                 ;     351         COM_WRITE(0x38);
+00010b d07a      	RCALL SUBOPT_0x8
+                 ;     352         delay_ms(2);
+00010c d074      	RCALL SUBOPT_0x7
+                 ;     353         COM_WRITE(0x38);
+00010d d078      	RCALL SUBOPT_0x8
+                 ;     354         delay_ms(2);
+00010e d072      	RCALL SUBOPT_0x7
+                 ;     355         COM_WRITE(0x38);
+00010f d076      	RCALL SUBOPT_0x8
+                 ;     356         delay_ms(2);
+000110 d070      	RCALL SUBOPT_0x7
+                 ;     357         COM_WRITE(0x0E);
+000111 e0ee      	LDI  R30,LOW(14)
+000112 d06c      	RCALL SUBOPT_0x6
+                 ;     358         delay_ms(2);
+000113 d06d      	RCALL SUBOPT_0x7
+                 ;     359         COM_WRITE(0x06);
+000114 e0e6      	LDI  R30,LOW(6)
+000115 d069      	RCALL SUBOPT_0x6
+                 ;     360         delay_ms(2);
+000116 d06a      	RCALL SUBOPT_0x7
+                 ;     361         LCD_CLEAR();
+000117 dfda      	RCALL _LCD_CLEAR
+                 ;     362     }
+                 ;     363 }    
                  _0xB:
                  _0x15:
-000119 9622      	ADIW R28,2
-00011a 9508      	RET
-                 ;     208 
-                 ;     209 void main(void)
-                 ;     210 {
+000118 9622      	ADIW R28,2
+000119 9508      	RET
+                 ;     364 
+                 ;     365 void main(void)
+                 ;     366 {
                  _main:
-                 ;     211     unsigned char str1[] = "RFID-TEST...";
-                 ;     212     unsigned char str2[] = "*RFID-RC522*";
-                 ;     213     unsigned char str3[] = "Reset Clear";
-                 ;     214     unsigned char str4[] = "FIFO Read...";
-                 ;     215     unsigned char str5[] = "Version 1.0";
-                 ;     216     unsigned char str6[] = "Version 2.0";
-                 ;     217     unsigned char str7[] = "No Detect  ";
-                 ;     218     
-                 ;     219     unsigned char byte = 0;
-                 ;     220     unsigned char SelfTestBuffer[64] = {0};
-                 ;     221          
-                 ;     222     delay_ms(1000);
+                 ;     367     unsigned char str1[] = "RFID-TEST...";
+                 ;     368     unsigned char str2[] = "RFID-RC522";
+                 ;     369     unsigned char str3[] = "Reset Clear";
+                 ;     370     unsigned char str4[] = "FIFO Read...";
+                 ;     371     unsigned char str5[] = "Version 1.0";
+                 ;     372     unsigned char str6[] = "Version 2.0";
+                 ;     373     unsigned char str7[] = "No Detect  ";
+                 ;     374     
+                 ;     375     unsigned char byte = 0;
+                 ;     376     unsigned char SelfTestBuffer[64] = {0};
+                 ;     377          
+                 ;     378     delay_ms(1000);
+00011a 97ef      	SBIW R28,63
 00011b 97ef      	SBIW R28,63
-00011c 97ef      	SBIW R28,63
-00011d 9769      	SBIW R28,25
-00011e e987      	LDI  R24,151
-00011f e0a0      	LDI  R26,LOW(0)
-000120 e0b0      	LDI  R27,HIGH(0)
-000121 e2e6      	LDI  R30,LOW(_0xC*2)
-000122 e0f0      	LDI  R31,HIGH(_0xC*2)
-000123 d073      	RCALL __INITLOCB
-                 ;	str1 -> Y+138
+00011c 9767      	SBIW R28,23
+00011d e985      	LDI  R24,149
+00011e e0a0      	LDI  R26,LOW(0)
+00011f e0b0      	LDI  R27,HIGH(0)
+000120 e2e6      	LDI  R30,LOW(_0xC*2)
+000121 e0f0      	LDI  R31,HIGH(_0xC*2)
+000122 d07b      	RCALL __INITLOCB
+                 ;	str1 -> Y+136
                  ;	str2 -> Y+125
                  ;	str3 -> Y+113
                  ;	str4 -> Y+100
@@ -1594,228 +1749,238 @@ rfid.asm(991): 'rfid.inc' included form here
                  ;	str7 -> Y+64
                  ;	byte -> R16
                  ;	SelfTestBuffer -> Y+0
-000124 e000      	LDI  R16,0
-000125 eee8      	LDI  R30,LOW(1000)
-000126 e0f3      	LDI  R31,HIGH(1000)
-000127 d059      	RCALL SUBOPT_0x9
-000128 d062      	RCALL _delay_ms
-                 ;     223 
-                 ;     224     DDRD = 0xFF;
-000129 efef      	LDI  R30,LOW(255)
-00012a bbe1      	OUT  0x11,R30
-                 ;     225     DDRC = 0xFF;
-00012b bbe4      	OUT  0x14,R30
-                 ;     226     DDRB = 0xEF;  //SS(Out) MOSI(In) MISO(Out) SCK(Out)
-00012c eeef      	LDI  R30,LOW(239)
-00012d bbe7      	OUT  0x17,R30
-                 ;     227         
-                 ;     228     LCD_INIT(0);
-00012e e0e0      	LDI  R30,LOW(0)
-00012f e0f0      	LDI  R31,HIGH(0)
-000130 d050      	RCALL SUBOPT_0x9
-000131 dfc5      	RCALL _LCD_INIT
-                 ;     229     
-                 ;     230     SPI_INIT();
-000132 df5c      	RCALL _SPI_INIT
-                 ;     231         
-                 ;     232     MFRC_INIT(); 
-000133 df79      	RCALL _MFRC_INIT
-                 ;     233         
-                 ;     234     /*
-                 ;     235     MFRC_RESET();
-                 ;     236     for(byte = 0; byte < 25; byte++){
-                 ;     237         MFRC_WRITE(0x09,0x00);   //FIFODataReg
-                 ;     238     }
-                 ;     239 
-                 ;     240     MFRC_WRITE(0x01,0x01);
-                 ;     241     MFRC_WRITE(0x36,0x09);
-                 ;     242     MFRC_WRITE(0x09,0x00);
-                 ;     243     MFRC_WRITE(0x01,0x03);
-                 ;     244     
-                 ;     245     for(byte = 0; byte<	64; byte++)
-                 ;     246     {
-                 ;     247         SelfTestBuffer[byte] = MFRC_READ(0x09);       
-                 ;     248         LCD_CHAR(0, 3, SelfTestBuffer[byte]);
-                 ;     249         delay_ms(1500);
-                 ;     250     }	
-                 ;     251     */
-                 ;     252     
-                 ;     253     while (1)
+000123 e000      	LDI  R16,0
+000124 eee8      	LDI  R30,LOW(1000)
+000125 e0f3      	LDI  R31,HIGH(1000)
+000126 d061      	RCALL SUBOPT_0x9
+000127 d06a      	RCALL _delay_ms
+                 ;     379 
+                 ;     380     DDRD = 0xFF;
+000128 efef      	LDI  R30,LOW(255)
+000129 bbe1      	OUT  0x11,R30
+                 ;     381     DDRC = 0xFF;
+00012a bbe4      	OUT  0x14,R30
+                 ;     382     DDRB = 0xEF;  //SS(Out) MOSI(In) MISO(Out) SCK(Out)
+00012b eeef      	LDI  R30,LOW(239)
+00012c bbe7      	OUT  0x17,R30
+                 ;     383         
+                 ;     384     LCD_INIT(0);
+00012d e0e0      	LDI  R30,LOW(0)
+00012e e0f0      	LDI  R31,HIGH(0)
+00012f d058      	RCALL SUBOPT_0x9
+000130 dfc5      	RCALL _LCD_INIT
+                 ;     385     
+                 ;     386     SPI_INIT();
+000131 df5c      	RCALL _SPI_INIT
+                 ;     387         
+                 ;     388     MFRC_INIT(); 
+000132 df79      	RCALL _MFRC_INIT
+                 ;     389         
+                 ;     390     /*
+                 ;     391     MFRC_RESET();
+                 ;     392     for(byte = 0; byte < 25; byte++){
+                 ;     393         MFRC_WRITE(0x09,0x00);   //FIFODataReg
+                 ;     394     }
+                 ;     395 
+                 ;     396     MFRC_WRITE(0x01,0x01);
+                 ;     397     MFRC_WRITE(0x36,0x09);
+                 ;     398     MFRC_WRITE(0x09,0x00);
+                 ;     399     MFRC_WRITE(0x01,0x03);
+                 ;     400     
+                 ;     401     for(byte = 0; byte<	64; byte++)
+                 ;     402     {
+                 ;     403         SelfTestBuffer[byte] = MFRC_READ(0x09);       
+                 ;     404         LCD_CHAR(0, 3, SelfTestBuffer[byte]);
+                 ;     405         delay_ms(1500);
+                 ;     406     }	
+                 ;     407     */
+                 ;     408     
+                 ;     409     delay_ms(100);
+000133 e6e4      	LDI  R30,LOW(100)
+000134 e0f0      	LDI  R31,HIGH(100)
+000135 d052      	RCALL SUBOPT_0x9
+000136 d05b      	RCALL _delay_ms
+                 ;     410     byte = MFRC_READ(0x37);
+000137 e3e7      	LDI  R30,LOW(55)
+000138 93ea      	ST   -Y,R30
+000139 df63      	RCALL _MFRC_READ
+00013a 2f0e      	MOV  R16,R30
+                 ;     411     delay_ms(200);
+00013b ece8      	LDI  R30,LOW(200)
+00013c e0f0      	LDI  R31,HIGH(200)
+00013d d04a      	RCALL SUBOPT_0x9
+00013e d053      	RCALL _delay_ms
+                 ;     412     
+                 ;     413     while (1)
                  _0xD:
-                 ;     254     {
-                 ;     255         byte = MFRC_READ(0x37);
-000134 e3e7      	LDI  R30,LOW(55)
-000135 93ea      	ST   -Y,R30
-000136 df67      	RCALL _MFRC_READ
-000137 2f0e      	MOV  R16,R30
-                 ;     256     
-                 ;     257         if(byte == 0x92)
-000138 3902      	CPI  R16,146
-000139 f449      	BRNE _0x10
-                 ;     258         {               
-                 ;     259             LCD_STR(0,0,str1);
-00013a e0e0      	LDI  R30,LOW(0)
-00013b d02b      	RCALL SUBOPT_0x4
-00013c d047      	RCALL SUBOPT_0xA
-                 ;     260             LCD_STR(1,0,str5);
-00013d e0e0      	LDI  R30,LOW(0)
-00013e 93ea      	ST   -Y,R30
-00013f 01fe      	MOVW R30,R28
-000140 5ae6      	SUBI R30,LOW(-(90))
-000141 4fff      	SBCI R31,HIGH(-(90))
-000142 c013      	RJMP _0x17
-                 ;     261         }
-                 ;     262         
-                 ;     263         else if(byte == 0x91)
+                 ;     414     {
+                 ;     415         if(byte == 0x92)
+00013f 3902      	CPI  R16,146
+000140 f449      	BRNE _0x10
+                 ;     416         {               
+                 ;     417             LCD_STR(0,0,str1);
+000141 e0e0      	LDI  R30,LOW(0)
+000142 d02b      	RCALL SUBOPT_0x4
+000143 d047      	RCALL SUBOPT_0xA
+                 ;     418             LCD_STR(1,0,str5);
+000144 e0e0      	LDI  R30,LOW(0)
+000145 93ea      	ST   -Y,R30
+000146 01fe      	MOVW R30,R28
+000147 5ae6      	SUBI R30,LOW(-(90))
+000148 4fff      	SBCI R31,HIGH(-(90))
+000149 c013      	RJMP _0x17
+                 ;     419         }
+                 ;     420         
+                 ;     421         else if(byte == 0x91)
                  _0x10:
-000143 3901      	CPI  R16,145
-000144 f449      	BRNE _0x12
-                 ;     264         {
-                 ;     265             LCD_STR(0,0,str1);
-000145 e0e0      	LDI  R30,LOW(0)
-000146 d020      	RCALL SUBOPT_0x4
-000147 d03c      	RCALL SUBOPT_0xA
-                 ;     266             LCD_STR(1,0,str6);
-000148 e0e0      	LDI  R30,LOW(0)
-000149 93ea      	ST   -Y,R30
-00014a 01fe      	MOVW R30,R28
-00014b 5be2      	SUBI R30,LOW(-(78))
-00014c 4fff      	SBCI R31,HIGH(-(78))
-00014d c008      	RJMP _0x17
-                 ;     267         }
-                 ;     268        
-                 ;     269         else
+00014a 3901      	CPI  R16,145
+00014b f449      	BRNE _0x12
+                 ;     422         {
+                 ;     423             LCD_STR(0,0,str1);
+00014c e0e0      	LDI  R30,LOW(0)
+00014d d020      	RCALL SUBOPT_0x4
+00014e d03c      	RCALL SUBOPT_0xA
+                 ;     424             LCD_STR(1,0,str6);
+00014f e0e0      	LDI  R30,LOW(0)
+000150 93ea      	ST   -Y,R30
+000151 01fe      	MOVW R30,R28
+000152 5be2      	SUBI R30,LOW(-(78))
+000153 4fff      	SBCI R31,HIGH(-(78))
+000154 c008      	RJMP _0x17
+                 ;     425         }
+                 ;     426        
+                 ;     427         else
                  _0x12:
-                 ;     270         {
-                 ;     271             LCD_STR(0,0,str1);
-00014e e0e0      	LDI  R30,LOW(0)
-00014f d017      	RCALL SUBOPT_0x4
-000150 d033      	RCALL SUBOPT_0xA
-                 ;     272             LCD_STR(1,0,str7);
-000151 e0e0      	LDI  R30,LOW(0)
-000152 93ea      	ST   -Y,R30
-000153 01fe      	MOVW R30,R28
-000154 5bee      	SUBI R30,LOW(-(66))
-000155 4fff      	SBCI R31,HIGH(-(66))
+                 ;     428         {
+                 ;     429             LCD_STR(0,0,str1);
+000155 e0e0      	LDI  R30,LOW(0)
+000156 d017      	RCALL SUBOPT_0x4
+000157 d033      	RCALL SUBOPT_0xA
+                 ;     430             LCD_STR(1,0,str7);
+000158 e0e0      	LDI  R30,LOW(0)
+000159 93ea      	ST   -Y,R30
+00015a 01fe      	MOVW R30,R28
+00015b 5bee      	SUBI R30,LOW(-(66))
+00015c 4fff      	SBCI R31,HIGH(-(66))
                  _0x17:
-000156 93fa      	ST   -Y,R31
-000157 93ea      	ST   -Y,R30
-000158 df82      	RCALL _LCD_STR
-                 ;     273         }                     
-                 ;     274     };
-000159 cfda      	RJMP _0xD
-                 ;     275 }
+00015d 93fa      	ST   -Y,R31
+00015e 93ea      	ST   -Y,R30
+00015f df7a      	RCALL _LCD_STR
+                 ;     431         }                     
+                 ;     432     };
+000160 cfde      	RJMP _0xD
+                 ;     433 }
                  _0x14:
-00015a cfff      	RJMP _0x14
+000161 cfff      	RJMP _0x14
                  
                  
                  ;OPTIMIZER ADDED SUBROUTINE, CALLED 2 TIMES, CODE SIZE REDUCTION:1 WORDS
                  SUBOPT_0x0:
-00015b 98c2      	CBI  0x18,2
-00015c 81e9      	LDD  R30,Y+1
-00015d 0fee      	LSL  R30
-00015e 77ee      	ANDI R30,LOW(0x7E)
-00015f 9508      	RET
+000162 98c2      	CBI  0x18,2
+000163 81e9      	LDD  R30,Y+1
+000164 0fee      	LSL  R30
+000165 77ee      	ANDI R30,LOW(0x7E)
+000166 9508      	RET
                  
                  ;OPTIMIZER ADDED SUBROUTINE, CALLED 4 TIMES, CODE SIZE REDUCTION:1 WORDS
                  SUBOPT_0x1:
-000160 93ea      	ST   -Y,R30
-000161 cf30      	RJMP _SPI_TRANSMIT
+000167 93ea      	ST   -Y,R30
+000168 cf28      	RJMP _SPI_TRANSMIT
                  
                  ;OPTIMIZER ADDED SUBROUTINE, CALLED 5 TIMES, CODE SIZE REDUCTION:2 WORDS
                  SUBOPT_0x2:
-000162 e0e1      	LDI  R30,LOW(1)
-000163 93ea      	ST   -Y,R30
-000164 9508      	RET
+000169 e0e1      	LDI  R30,LOW(1)
+00016a 93ea      	ST   -Y,R30
+00016b 9508      	RET
                  
                  ;OPTIMIZER ADDED SUBROUTINE, CALLED 8 TIMES, CODE SIZE REDUCTION:5 WORDS
                  SUBOPT_0x3:
-000165 93ea      	ST   -Y,R30
-000166 cf31      	RJMP _MFRC_WRITE
+00016c 93ea      	ST   -Y,R30
+00016d cf29      	RJMP _MFRC_WRITE
                  
                  ;OPTIMIZER ADDED SUBROUTINE, CALLED 4 TIMES, CODE SIZE REDUCTION:1 WORDS
                  SUBOPT_0x4:
-000167 93ea      	ST   -Y,R30
-000168 e0e0      	LDI  R30,LOW(0)
-000169 9508      	RET
+00016e 93ea      	ST   -Y,R30
+00016f e0e0      	LDI  R30,LOW(0)
+000170 9508      	RET
                  
                  ;OPTIMIZER ADDED SUBROUTINE, CALLED 2 TIMES, CODE SIZE REDUCTION:10 WORDS
                  SUBOPT_0x5:
-00016a 98a9      	CBI  0x15,1
-00016b 9aa8      	SBI  0x15,0
-00016c ec88
-00016d e090
-00016e 9701
-00016f f7f1      	__DELAY_USW 200
-000170 81e8      	LD   R30,Y
-000171 bbe2      	OUT  0x12,R30
-000172 ec88
-000173 e090
-000174 9701
-000175 f7f1      	__DELAY_USW 200
-000176 98a8      	CBI  0x15,0
-000177 9508      	RET
+000171 98a9      	CBI  0x15,1
+000172 9aa8      	SBI  0x15,0
+000173 ec88
+000174 e090
+000175 9701
+000176 f7f1      	__DELAY_USW 200
+000177 81e8      	LD   R30,Y
+000178 bbe2      	OUT  0x12,R30
+000179 ec88
+00017a e090
+00017b 9701
+00017c f7f1      	__DELAY_USW 200
+00017d 98a8      	CBI  0x15,0
+00017e 9508      	RET
                  
                  ;OPTIMIZER ADDED SUBROUTINE, CALLED 11 TIMES, CODE SIZE REDUCTION:8 WORDS
                  SUBOPT_0x6:
-000178 93ea      	ST   -Y,R30
-000179 cf5a      	RJMP _COM_WRITE
+00017f 93ea      	ST   -Y,R30
+000180 cf52      	RJMP _COM_WRITE
                  
                  ;OPTIMIZER ADDED SUBROUTINE, CALLED 11 TIMES, CODE SIZE REDUCTION:38 WORDS
                  SUBOPT_0x7:
-00017a e0e2      	LDI  R30,LOW(2)
-00017b e0f0      	LDI  R31,HIGH(2)
-00017c 93fa      	ST   -Y,R31
-00017d 93ea      	ST   -Y,R30
-00017e c00c      	RJMP _delay_ms
+000181 e0e2      	LDI  R30,LOW(2)
+000182 e0f0      	LDI  R31,HIGH(2)
+000183 93fa      	ST   -Y,R31
+000184 93ea      	ST   -Y,R30
+000185 c00c      	RJMP _delay_ms
                  
                  ;OPTIMIZER ADDED SUBROUTINE, CALLED 6 TIMES, CODE SIZE REDUCTION:3 WORDS
                  SUBOPT_0x8:
-00017f e3e8      	LDI  R30,LOW(56)
-000180 cff7      	RJMP SUBOPT_0x6
+000186 e3e8      	LDI  R30,LOW(56)
+000187 cff7      	RJMP SUBOPT_0x6
                  
-                 ;OPTIMIZER ADDED SUBROUTINE, CALLED 5 TIMES, CODE SIZE REDUCTION:2 WORDS
+                 ;OPTIMIZER ADDED SUBROUTINE, CALLED 7 TIMES, CODE SIZE REDUCTION:4 WORDS
                  SUBOPT_0x9:
-000181 93fa      	ST   -Y,R31
-000182 93ea      	ST   -Y,R30
-000183 9508      	RET
+000188 93fa      	ST   -Y,R31
+000189 93ea      	ST   -Y,R30
+00018a 9508      	RET
                  
                  ;OPTIMIZER ADDED SUBROUTINE, CALLED 3 TIMES, CODE SIZE REDUCTION:10 WORDS
                  SUBOPT_0xA:
-000184 93ea      	ST   -Y,R30
-000185 01fe      	MOVW R30,R28
-000186 57e4      	SUBI R30,LOW(-(140))
-000187 4fff      	SBCI R31,HIGH(-(140))
-000188 dff8      	RCALL SUBOPT_0x9
-000189 df51      	RCALL _LCD_STR
-00018a cfd7      	RJMP SUBOPT_0x2
+00018b 93ea      	ST   -Y,R30
+00018c 01fe      	MOVW R30,R28
+00018d 57e6      	SUBI R30,LOW(-(138))
+00018e 4fff      	SBCI R31,HIGH(-(138))
+00018f dff8      	RCALL SUBOPT_0x9
+000190 df49      	RCALL _LCD_STR
+000191 cfd7      	RJMP SUBOPT_0x2
                  
                  _delay_ms:
-00018b 91e9      	ld   r30,y+
-00018c 91f9      	ld   r31,y+
-00018d 9630      	adiw r30,0
-00018e f039      	breq __delay_ms1
+000192 91e9      	ld   r30,y+
+000193 91f9      	ld   r31,y+
+000194 9630      	adiw r30,0
+000195 f039      	breq __delay_ms1
                  __delay_ms0:
-00018f ea80
-000190 e09f
-000191 9701
-000192 f7f1      	__DELAY_USW 0xFA0
-000193 95a8      	wdr
-000194 9731      	sbiw r30,1
-000195 f7c9      	brne __delay_ms0
+000196 ea80
+000197 e09f
+000198 9701
+000199 f7f1      	__DELAY_USW 0xFA0
+00019a 95a8      	wdr
+00019b 9731      	sbiw r30,1
+00019c f7c9      	brne __delay_ms0
                  __delay_ms1:
-000196 9508      	ret
+00019d 9508      	ret
                  
                  __INITLOCB:
                  __INITLOCW:
-000197 0fac      	ADD R26,R28
-000198 1fbd      	ADC R27,R29
+00019e 0fac      	ADD R26,R28
+00019f 1fbd      	ADC R27,R29
                  __INITLOC0:
-000199 9005      	LPM  R0,Z+
-00019a 920d      	ST   X+,R0
-00019b 958a      	DEC  R24
-00019c f7e1      	BRNE __INITLOC0
-00019d 9508      	RET
+0001a0 9005      	LPM  R0,Z+
+0001a1 920d      	ST   X+,R0
+0001a2 958a      	DEC  R24
+0001a3 f7e1      	BRNE __INITLOC0
+0001a4 9508      	RET
                  
                  ;END OF CODE MARKER
                  __END_OF_CODE:
@@ -1839,7 +2004,7 @@ ATmega8 register use summary:
 r0 :   6 r1 :   1 r2 :   0 r3 :   0 r4 :   0 r5 :   0 r6 :   0 r7 :   0 
 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 r13:   0 r14:   0 r15:   0 
 r16:  13 r17:   0 r18:   0 r19:   0 r20:   0 r21:   0 r22:   2 r23:   0 
-r24:  15 r25:   5 r26:  10 r27:   6 r28:  12 r29:   2 r30: 119 r31:  20 
+r24:  15 r25:   5 r26:  10 r27:   6 r28:  12 r29:   2 r30: 121 r31:  22 
 x  :   5 y  :  46 z  :   8 
 Registers used: 15 out of 35 (42.9%)
 
@@ -1853,10 +2018,10 @@ bst   :   0 cbi   :   4 cbr   :   0 clc   :   0 clh   :   0 cli   :   1
 cln   :   0 clr   :   2 cls   :   0 clt   :   0 clv   :   0 clz   :   0 
 com   :   0 cp    :   0 cpc   :   0 cpi   :   3 cpse  :   0 dec   :   2 
 eor   :   0 fmul  :   0 fmuls :   0 fmulsu:   0 icall :   0 ijmp  :   0 
-in    :   1 inc   :   0 ld    :  11 ldd   :   8 ldi   :  63 lds   :   0 
+in    :   1 inc   :   0 ld    :  11 ldd   :   8 ldi   :  67 lds   :   0 
 lpm   :   8 lsl   :   3 lsr   :   0 mov   :   6 movw  :   7 mul   :   0 
 muls  :   0 mulsu :   0 neg   :   0 nop   :   0 or    :   0 ori   :   3 
-out   :  14 pop   :   0 push  :   0 rcall :  64 ret   :  14 reti  :   0 
+out   :  14 pop   :   0 push  :   0 rcall :  68 ret   :  14 reti  :   0 
 rjmp  :  37 rol   :   0 ror   :   0 sbc   :   0 sbci  :   4 sbi   :   4 
 sbic  :   0 sbis  :   1 sbiw  :  12 sbr   :   0 sbrc  :   0 sbrs  :   0 
 sec   :   0 seh   :   0 sei   :   0 sen   :   0 ser   :   0 ses   :   0 
@@ -1868,7 +2033,7 @@ Instructions used: 33 out of 109 (30.3%)
 ATmega8 memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x00033c    674    154    828    8192  10.1%
+[.cseg] 0x000000 0x00034a    690    152    842    8192  10.3%
 [.dseg] 0x000060 0x000160      0      0      0    1024   0.0%
 [.eseg] 0x000000 0x000000      0      0      0     512   0.0%
 

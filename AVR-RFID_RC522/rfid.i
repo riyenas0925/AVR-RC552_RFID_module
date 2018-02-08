@@ -431,10 +431,12 @@ void LCD_INIT(int mode){
         delay_ms(1500);
     }	
     */
+        delay_ms(100);
+    byte = MFRC_READ(0x37);
+    delay_ms(200);
         while (1)
     {
-        byte = MFRC_READ(0x37);
-            if(byte == 0x92)
+        if(byte == 0x92)
         {               
             LCD_STR(0,0,str1);
             LCD_STR(1,0,str5);

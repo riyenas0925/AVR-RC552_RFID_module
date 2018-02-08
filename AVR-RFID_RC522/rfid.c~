@@ -143,6 +143,7 @@ void MFRC_INIT(){
     }
 }    
 
+/*
 unsigned char MFRC_TO_CARD(unsigned char cmd, unsigned char *send data, unsigned char send_data_len, unsigned char *back_data, unsigned long *back_data_len){
     unsigned char status = ERROR;
     unsigned char irqEn = 0x00;
@@ -278,7 +279,7 @@ unsigned char MFRC_REQUEST(unsigned char req_mode, unsigned char * tag_type)
    
 	return status;
 }
-
+*/
 
 
 /*****************************************************
@@ -407,6 +408,7 @@ void main(void)
     
     while (1)
     {
+        delay_ms(100);
         byte = MFRC_READ(0x37);
     
         if(byte == 0x92)

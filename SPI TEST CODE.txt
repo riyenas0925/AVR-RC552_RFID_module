@@ -1,0 +1,109 @@
+spi 초기화
+
+SDA -> LOW, RST -> HIGH
+
+RFID 모듈 초기화
+
+/************* 여기까지가 시작단계 ********************/
+
+
+void SPI_init(void)
+{
+	SCK, MOSI 
+	SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0)
+	//SPE : SPI enable, MSTR : 마스터(1) 슬레이브(0) 셀렉트,  SPR : Clock rate
+}
+
+
+SPCR ? SPI Control Register ? This register is basically the master register i.e. it contains the bits to initialize SPI and control it.
+SPSR ? SPI Status Register ? This is the status register. This register is used to read the status of the bus lines.
+SPDR ? SPI Data Register ? The SPI Data Register is the read/write register where the actual data transfer takes place
+
+
+
+
+
+#include <mega8.h>
+#include <delay.h>
+
+#define STATE_LED PORTB.0
+#define RST PORTB.1
+#define UDRE 5
+#define SPIF 7
+          
+void USART_INIT(void);
+void SPI_INIT(void);
+void TX_OUT(unsigned char DATA);
+void SPI_WRITE(unsigned char DATA);
+unsigned char SPI_READ(unsigned char ADDRESS);
+          
+void USART_INIT(void)
+{
+	UCSRB=0x18;	//TX, RX Enable
+	UCSRC=0x86;     //9600baud, parity bit = NO, stop bit = 1, data 8bit
+	UBRRH=103 >> 8;
+	UBRRL=103;	//Baud 115200으로 설정
+}
+
+void SPI_INIT(void)
+{         
+        SPCR = 0x51;    //SPI,MSTR,SPR0 1MHz로 통신
+}
+
+void TX_OUT(unsigned char DATA)
+{
+	while(!(UCSRA&(1<<UDRE)));
+	UDR = DATA;
+}
+
+
+void SPI_WRITE(unsigned char DATA)
+{
+        SPDR = DATA;
+        while(!(SPSR&(1<<SPIF)));
+}              
+
+unsigned char SPI_READ(unsigned char ADRESS)
+{                  
+        unsigned char DATA;
+        
+        SPDR = ADRESS;
+        while(!SPSR&(1<<SPIF));
+        
+        DATA = SPDR;
+        
+        return DATA;
+} 
+
+
+void main(void)
+{                    
+        unsigned char data;  
+        DDRB=0x07;
+        USART_INIT();
+        SPI_INIT();  
+        
+        while(1)
+        {
+                data = SPI_READ(0x00);
+                
+                if(data == 0x00)
+                {
+                        TX_OUT(0x00);
+                } 
+                
+                else if(0x01)
+                {
+                        TX_OUT(0xFF);
+                }
+                delay_ms(10);   
+        
+                
+                /*
+                SPI_WRITE(0x00);
+                delay_ms(1000);
+                SPI_WRITE(0x01);
+                delay_ms(1000);    
+                */     
+        };
+}

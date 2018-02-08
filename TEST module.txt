@@ -1,0 +1,28 @@
+The MFRC522 has the capability to perform a digital self test. The self test is started by
+using the following procedure:
+1. Perform a soft reset.
+2. Clear the internal buffer by writing 25 bytes of 00h and implement the Config
+command.
+3. Enable the self test by writing 09h to the AutoTestReg register.
+4. Write 00h to the FIFO buffer.
+5. Start the self test with the CalcCRC command.
+6. The self test is initiated.
+7. When the self test has completed, the FIFO buffer contains the following 64 bytes:
+FIFO buffer byte values for MFRC522 version 1.0:
+00h, C6h, 37h, D5h, 32h, B7h, 57h, 5Ch,
+C2h, D8h, 7Ch, 4Dh, D9h, 70h, C7h, 73h,
+10h, E6h, D2h, AAh, 5Eh, A1h, 3Eh, 5Ah,
+14h, AFh, 30h, 61h, C9h, 70h, DBh, 2Eh,
+64h, 22h, 72h, B5h, BDh, 65h, F4h, ECh,
+22h, BCh, D3h, 72h, 35h, CDh, AAh, 41h,
+1Fh, A7h, F3h, 53h, 14h, DEh, 7Eh, 02h,
+D9h, 0Fh, B5h, 5Eh, 25h, 1Dh, 29h, 79h
+FIFO buffer byte values for MFRC522 version 2.0:
+00h, EBh, 66h, BAh, 57h, BFh, 23h, 95h,
+D0h, E3h, 0Dh, 3Dh, 27h, 89h, 5Ch, DEh,
+9Dh, 3Bh, A7h, 00h, 21h, 5Bh, 89h, 82h,
+51h, 3Ah, EBh, 02h, 0Ch, A5h, 00h, 49h,
+7Ch, 84h, 4Dh, B3h, CCh, D2h, 1Bh, 81h,
+5Dh, 48h, 76h, D5h, 71h, 061h, 21h, A9h,
+86h, 96h, 83h, 38h, CFh, 9Dh, 5Bh, 6Dh,
+DCh, 15h, BAh, 3Eh, 7Dh, 95h, 03Bh, 2Fh

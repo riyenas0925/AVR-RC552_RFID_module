@@ -1,0 +1,15 @@
+1.Request command
+2.Answer To Request acc
+
+
+Bit frameant collision supported?
+
+No -> Proprietary frames and protocol
+Yes -> Anticollison Loop
+
+UID+SAK
+
+SAK bit 6 = 1?
+
+No -> MIFARE Protocol
+Yes -> ISO14443-4(T=CL)

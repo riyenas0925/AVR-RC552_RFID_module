@@ -129,12 +129,12 @@ void MFRC_INIT(){
     
     MFRC_RESET();
 	
-    MFRC_WRITE(0x2A, 0x8D);         //TmodeReg
-    MFRC_WRITE(0x2B, 0x3E);    //TPrescaleReg
+    MFRC_WRITE(0x2A, 0x8D);     //TmodeReg
+    MFRC_WRITE(0x2B, 0x3E);     //TPrescaleReg
     MFRC_WRITE(0x2C, 30);       //TReloadReg_1
     MFRC_WRITE(0x2D, 0);	//TReloadReg_2
-    MFRC_WRITE(0x15, 0x40);	        //TxASKReg
-    MFRC_WRITE(0x11, 0x3D);          //ModeReg
+    MFRC_WRITE(0x15, 0x40);	//TxASKReg
+    MFRC_WRITE(0x11, 0x3D);     //ModeReg
 	
     byte = MFRC_READ(0x14);     //TxControlReg
     if(!(byte&0x03))
@@ -142,6 +142,27 @@ void MFRC_INIT(){
     	MFRC_WRITE(0x14,(byte|0x03));     //TxControlReg
     }
 }    
+
+void MFRC_VER_TEST(){
+    byte = MFRC_READ(0x37);
+    if(byte == 0x92)
+    {               
+        LCD_STR(0,0,str1);
+        LCD_STR(1,0,str5);
+    }
+        
+    else if(byte == 0x91)
+    {
+        LCD_STR(0,0,str1);
+        LCD_STR(1,0,str6);
+    }
+       
+    else
+    {
+        LCD_STR(0,0,str1);
+        LCD_STR(1,0,str7);
+    }    
+}
 
 /*
 unsigned char MFRC_TO_CARD(unsigned char cmd, unsigned char *send data, unsigned char send_data_len, unsigned char *back_data, unsigned long *back_data_len){
@@ -386,6 +407,8 @@ void main(void)
     SPI_INIT();
         
     MFRC_INIT(); 
+    
+    MFRC_VER_TEST();
         
     /*
     MFRC_RESET();
@@ -406,28 +429,8 @@ void main(void)
     }	
     */
     
-    delay_ms(100);
-    byte = MFRC_READ(0x37);
-    delay_ms(200);
-    
     while (1)
     {
-        if(byte == 0x92)
-        {               
-            LCD_STR(0,0,str1);
-            LCD_STR(1,0,str5);
-        }
-        
-        else if(byte == 0x91)
-        {
-            LCD_STR(0,0,str1);
-            LCD_STR(1,0,str6);
-        }
-       
-        else
-        {
-            LCD_STR(0,0,str1);
-            LCD_STR(1,0,str7);
-        }                     
+                 
     };
 }

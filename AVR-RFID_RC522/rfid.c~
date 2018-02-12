@@ -406,11 +406,12 @@ void main(void)
     }	
     */
     
+    delay_ms(100);
+    byte = MFRC_READ(0x37);
+    delay_ms(200);
+    
     while (1)
     {
-        delay_ms(100);
-        byte = MFRC_READ(0x37);
-    
         if(byte == 0x92)
         {               
             LCD_STR(0,0,str1);
